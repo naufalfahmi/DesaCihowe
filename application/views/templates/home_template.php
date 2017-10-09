@@ -102,67 +102,96 @@
                             <li class="active"><a href="<?php echo base_url();?>">Home</a></li>
                             
                             <?php
-                                foreach ($parent_menu as $pmenu)
-                                {
-                                    $count_child=$this->model_home->get_count_child($pmenu['id_menu']);
-                                    if($count_child!=0)
-                                {
-                                    echo '
-                            <li class="has-dropdown">
-                                <a href="#">
-                                <i class="fa fa-'.$pmenu['icon'].'"></i> '.$pmenu['judul'].'</a>
-                                
-                                <ul class="dropdown">';
-                                $child_menu=$this->model_home->get_menu_child($pmenu['id_menu'],"home");
-                                    foreach ($child_menu as $cmenu)
-                                    {
-                                     if($pmenu['link']!=NULL)
-                                     {
-                                      echo '
+                                            foreach ($parent_menu as $pmenu)
+                                            {
+                                                $count_child=$this->model_home->get_count_child($pmenu['id_menu']);
+                                                if($count_child!=0)
+                                                {
+                                                        echo '
                                     <li>
-                                    <a href="'.base_url($cmenu['link']).'">
-                                    <i class="fa fa-'.$cmenu['icon'].'"></i> '.$cmenu['judul'].'</a>
-                                    </li>';
-                                      }
-                                       else
-                                       {
+                                      <a href="#">
+                                        <i class="fa fa-'.$pmenu['icon'].'"></i> '.$pmenu['judul'].'
+                                          <div style="position:absolute; left: 50%;">
+                                              <span class="triangle">&nbsp;</span>
+                                            </div>
+                                    </a>
+                                    <ul class="sub-menu">';
+                                                    $child_menu=$this->model_home->get_menu_child($pmenu['id_menu'],"home");
+                                                    foreach ($child_menu as $cmenu)
+                                                    {
+                                                            if($cmenu['link']!=NULL)
+                                                            {
+                                        echo '
+                                        <li>
+                                            <a href="'.base_url($cmenu['link']).'">
+                                                <i class="fa fa-'.$cmenu['icon'].'"></i> '.$cmenu['judul'].'
+                                                <div style="position:absolute; left: 50%;">
+                                                    <span class="triangle">&nbsp;</span>
+                                                </div>
+                                            </a>
+                                        </li>';
+                                                            }
+                                                            else
+                                                            {
                                         $url='';
                                         $param=array('id_konten'=>$cmenu['id_konten']);
                                         $menuc=$this->model_konten->get_konten($param)->row_array();
                                         $url=base_url('/'.'home/detail_konten/'.$menuc['id_konten'].'/'.$menuc['judul']);
                                         echo '
-                                    <li>
-                                        <a href="'.$url.'">
-                                        <i class="fa fa-'.$cmenu['icon'].'"></i> '.$cmenu['judul'].'</a>
-                                    </li>';
-                                        }
-                                    }
-                                    echo '</ul></li>';
-                                }
-                                                else
-                                                {
-                                                 if($pmenu['link']!=NULL)
-                                                {
-                                    echo '
-                                    <li>
-                                        <a href="'.$pmenu['link'].'">
-                                        <i class="fa fa-'.$pmenu['icon'].'"></i> '.$pmenu['judul'].'</a>
-                                    </li>';
+                                        <li>
+                                            <a href="'.$url.'">
+                                                <i class="fa fa-'.$cmenu['icon'].'"></i> '.$cmenu['judul'].'
+                                                <div style="position:absolute; left: 50%;">
+                                                    <span class="triangle">&nbsp;</span>
+                                                </div>
+                                            </a>
+                                        </li>';
+                                                            }
+                                                    }
+                                                    echo '</ul></li>';
                                                 }
                                                 else
                                                 {
+                                                    if($pmenu['link']!=NULL)
+                                                    {
+                                    $link=$_SERVER['REQUEST_URI'];
+                                    if($link==base_url())
+                                    {
+                                      $link=$_SERVER['REQUEST_URI'].$pmenu['link'];
+                                    }
+                                    else
+                                    {
+                                      $link=base_url().str_replace("/home","",$pmenu['link']);
+                                    }
+                                    echo '
+                                    <li>
+                                    <a href="'.$link.'">
+                                      <i class="fa fa-'.$pmenu['icon'].'"></i> '.$pmenu['judul'].'
+                                        <div style="position:absolute; left: 50%;">
+                                          <span class="triangle">&nbsp;</span>
+                                      </div>
+                                    </a>
+                                    </li>';
+                                                    }
+                                                    else
+                                                    {
                                     $url='';
                                     $param=array('id_konten'=>$pmenu['id_konten']);
                                     $menup=$this->model_konten->get_konten($param)->row_array();
                                     $url=base_url('/'.'home/detail_konten/'.$menup['id_konten'].'/'.$menup['judul']);
                                     echo '
                                     <li>
-                                        <a href="'.$url.'">
-                                        <i class="fa fa-'.$pmenu['icon'].'"></i> '.$pmenu['judul'].'</a>
+                                    <a href="'.$url.'">
+                                      <i class="fa fa-'.$pmenu['icon'].'"></i> '.$pmenu['judul'].'
+                                        <div style="position:absolute; left: 50%;">
+                                          <span class="triangle">&nbsp;</span>
+                                      </div>
+                                    </a>
                                     </li>';
+                                                    }
                                                 }
-                                                }
-                            } ?>
+
+                                            } ?>
                         </ul>
                     </div>
 
